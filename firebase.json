@@ -33,5 +33,9 @@
     "ui": {
       "enabled": true
     }
+  },
+  "rewrites":{
+    "source": "/api/v1/**",
+    "function": "webApi"
   }
 }
