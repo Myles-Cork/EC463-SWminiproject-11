@@ -1,13 +1,7 @@
+//Function for updating cloud firestore database "device" documents
+//supports patches sent in JSON, to addresses in the the form <function trigger address>/api/v1/device/<deviceId>
+
 import * as functions from 'firebase-functions';
-
-// // Start writing Firebase Functions
-// // https://firebase.google.com/docs/functions/typescript
-//
-// export const helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
-
 import * as admin from 'firebase-admin';
 import * as firebaseHelper from 'firebase-functions-helper/dist';
 import * as express from 'express';
@@ -21,7 +15,7 @@ const main = express();
 
 main.use(bodyParser.json());
 main.use(bodyParser.urlencoded({extended: false}));
-main.use('api/v1', app);
+main.use('/api/v1', app);
 
 const deviceCollection = 'devices';
 export const webApi = functions.https.onRequest(main);
