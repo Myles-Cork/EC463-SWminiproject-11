@@ -5,7 +5,7 @@ import time
 
 print("This script sends mock data to the database under the deviceId specified\n")
 deviceId = input("Enter a deviceId: ")
-
+secret = input("Enter the secret: ")
 
 numPoints = 10 #number of datapoints to keep track of
 updateTime = 5 #seconds between current temp updates
@@ -55,7 +55,7 @@ for i in range(0, numUpdates):
         Humidity[0] = currentHumid
 
 
-    r = requests.patch('https://us-central1-ec463-swminiproject-11.cloudfunctions.net/webApi/api/v1/device/' + deviceId,
+    r = requests.patch('https://us-central1-ec463-swminiproject-11.cloudfunctions.net/webApi/api/v1/device/' + deviceId + "?auth=" + secret,
         data = {
             'CurrentTemperature' : int(currentTemp),
             'CurrentHumidity' : currentHumid,
