@@ -6,9 +6,9 @@ import time
 print("This script sends mock data to the database under the deviceId specified\n")
 deviceId = input("Enter a deviceId: ")
 
-numPoints = 10 #number of datapoints to keep track of.
-updateTime = 5 #seconds between updates
-numUpdates = 20 # number of times to update the temperature
+numPoints = 10 #number of datapoints to keep track of
+updateTime = 0.5 #seconds between updates
+numUpdates = 20 #total number of times to update (must be greater than numPoints for full array of generated data points)
 
 #The following are for calculating new values for Temperature and Humidity
 tempmax = 80
@@ -25,6 +25,7 @@ Humidity = deque([0]*numPoints)
 
 
 for i in range(0, numUpdates):
+    start = time.process_time()
     Temperature.rotate(1)
     Humidity.rotate(1)
 
@@ -43,6 +44,10 @@ for i in range(0, numUpdates):
     print(r)
     # print content of request
     print(r.content)
-    time.sleep(updateTime)
+
+    sleepTime = max(0.0 , updateTime - (time.process_time() - start)) #ensures time between updates is the same as updateTime and/or non-negative
+
+    time.sleep(sleepTime)
+    print("Update Time: " + sleepTime)
 
 print("Done")
