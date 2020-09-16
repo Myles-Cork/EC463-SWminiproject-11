@@ -1,0 +1,62 @@
+ <html lang="en">
+        <head>
+          <meta charset="utf-8">
+          <title>Home Monitor MiniProject</title>
+          <link rel="stylesheet" href="css/welcome.css">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        </head>
+        <body class="fullscreen">
+          <div class="container">
+            <h1 class="title">Welcome to Your Home Monitor!</h1>
+        
+            <script src="/__/firebase/7.20.0/firebase-app.js"></script>
+            <script src="/__/firebase/7.20.0/firebase-analytics.js"></script>
+            <script src="/__/firebase/7.20.0/firebase-auth.js"></script>
+            <script src="/__/firebase/7.20.0/firebase-firestore.js"></script>
+            
+            <!-- Initialize Firebase -->
+            <script src="/__/firebase/init.js"></script>
+
+            <script>
+              document.addEventListener('DOMContentLoaded', event => {
+                const app = firebase.app();
+                console.log(app)
+              });
+            </script>
+
+            <script>
+                // Initialize Firebase
+                const firebaseConfig = {
+                  apiKey: "AIzaSyDKoiJKuXg0Rb5vcEkP_I085lSHhST3Ihs",
+                  authDomain: "ec463-swminiproject-11.firebaseapp.com",
+                  databaseURL: "https://ec463-swminiproject-11.firebaseio.com",
+                  projectId: "ec463-swminiproject-11",
+                  storageBucket: "ec463-swminiproject-11.appspot.com",
+                  messagingSenderId: "361498299130",
+                  appId: "1:361498299130:web:d257964155304d874a5743",
+                  measurementId: "G-8H6KG81R81"
+                };
+                firebase.initializeApp(config);
+                firebase.analytics();
+            </script>
+        
+            <h3>Sign In with Google Here</h3>
+            <button id="googleloginbutton" type="button" class="btn">Sign In</button>
+          </div>
+        
+        <script>
+          var googleloginbutton = document.getElementById("googleloginbutton");
+        
+          googleloginbutton.onclick = function() {
+            var provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithPopup(provider).then(function () {
+              window.location = "example1.html";
+            }).catch(function (error) {
+              var errorMessage = error.message;
+              alert(errorMessage);
+            })
+            }
+        </script>
+        
+        </body>
