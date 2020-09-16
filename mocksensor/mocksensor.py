@@ -41,6 +41,21 @@ if prewarmAns == 'Y':
         prevhumid = Humidity[k]
         SampleTimes[k] = (datetime.now() - timedelta(seconds=(historyUpdateTime*(k+1)))).strftime("%H:%M:%S")
 
+userAns = ' '
+while userAns != 'Y' and prewarmAns != 'N':
+    print("Change userid for this device?")
+    userAns = input("Enter Y or N: ")
+
+useridAns = ' '
+if userAns == 'Y':
+    useridAns = input("Enter new userId for this device: ")
+    r = requests.patch('https://us-central1-ec463-swminiproject-11.cloudfunctions.net/webApi/api/v1/device/' + deviceId,
+        data = {
+            'userId' : useridAns
+        })
+    print(r)
+    # print content of request
+    print(r.content)
 
 for i in range(0, numUpdates):
     start = time.process_time()
