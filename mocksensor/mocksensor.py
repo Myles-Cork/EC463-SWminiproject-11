@@ -2,6 +2,7 @@ import requests
 import random
 from collections import deque
 import time
+from datetime import datetime, timedelta
 
 print("This script sends mock data to the database under the deviceId specified\n")
 deviceId = input("Enter a deviceId: ")
@@ -25,10 +26,11 @@ prevhumid= random.randint(humidmin,humidmax) #aka the start humidity
 
 Temperature = deque([0]*numPoints)
 Humidity = deque([0]*numPoints)
+SampleTimes = deque([0]*numPoints) #Number at index corresponds to the time Temperature/Humidity at the
 
 prewarmAns = ' '
 while prewarmAns != 'Y' and prewarmAns != 'N':
-    print("Prewarm the history data? (Arrays start with a full array of randomly generated values)") #saves on function calls for graph testing
+    print("Prewarm the history data? (Arrays start full with randomly generated values)") #saves on function calls for graph testing
     prewarmAns = input("Enter Y or N: ")
 
 if prewarmAns == 'Y':
@@ -37,6 +39,7 @@ if prewarmAns == 'Y':
         Humidity[k]   = max(humidmin, min(humidmax, prevhumid + random.randint(-humidshift,humidshift)))
         prevtemp = Temperature[k]
         prevhumid = Humidity[k]
+        SampleTimes[k] = (datetime.now() - timedelta(seconds=(historyUpdateTime*(k+1)))).strftime("%H:%M:%S")
 
 
 for i in range(0, numUpdates):
@@ -51,16 +54,19 @@ for i in range(0, numUpdates):
     if i%historyUpdateTime == 0:
         Temperature.rotate(1)
         Humidity.rotate(1)
+        SampleTimes.rotate(1)
         Temperature[0] = currentTemp
         Humidity[0] = currentHumid
+        SampleTimes[0] = datetime.now().strftime("%H:%M:%S")
 
 
     r = requests.patch('https://us-central1-ec463-swminiproject-11.cloudfunctions.net/webApi/api/v1/device/' + deviceId,
         data = {
-            'CurrentTemperature' : int(currentTemp),
+            'CurrentTemperature' : currentTemp,
             'CurrentHumidity' : currentHumid,
             'Temperature' : Temperature,
-            'Humidity' : Humidity
+            'Humidity' : Humidity,
+            'SampleTimes' : SampleTimes
         })
     # check status code for response recieved
     # success code - 200
