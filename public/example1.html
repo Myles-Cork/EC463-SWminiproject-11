@@ -10,13 +10,16 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         <script type="text/javascript">
           const db = firebase.firestore();
+          google.charts.load('current', {packages: ['corechart']});
 
           db.collection('devices').orderBy('deviceName').onSnapshot(snapshot =>{
             var Devices = db.collection("devices").doc('jya8XdUSmvrRehqk7t4c');
             Devices.get().then(function(doc){
                 if (doc.exists) {
-                    console.log("Document data:", doc.data());
                     var devicedata = doc.data();
+                    var deviceName = devicedata.deviceName;
+                    var CurrentTemperature = devicedata.CurrentTemperature;
+                    var CurrentHumidity = devicedata.CurrentHumidity;
                     var Tempdata = devicedata.Temperature;
                     var Humiddata = devicedata.Humidity;
                     var Timedata = devicedata.SampleTimes;
@@ -27,6 +30,10 @@
                         tempRows[i] = [Timedata[i],parseInt(Tempdata[i],10)];
                         humidRows[i] = [Timedata[i],parseInt(Humiddata[i],10)];
                     }
+
+                    document.getElementById("device_Name").innerHTML = "Device Name: " + deviceName;
+                    document.getElementById("Current_Temperature").innerHTML = "Current Temperature: " + CurrentTemperature + "°F";
+                    document.getElementById("Current_Humidity").innerHTML = "Current Humidity: " + CurrentHumidity + "%";
 
                     var tempGraphData = new google.visualization.DataTable();
                     tempGraphData.addColumn('string', 'Time');
@@ -72,95 +79,27 @@
           firebase.auth().onAuthStateChanged(function(user) {
             if (user) {
               // User is signed in.
-              document.getElementById("userId").innerHTML = firebase.auth().currentUser.uid;
+              document.getElementById("userId").innerHTML = 'Your UserId: ' + firebase.auth().currentUser.uid;
             } else {
               // No user is signed in.
             }
           });
-
-
-
-            google.charts.load('current', {packages: ['corechart']});
-            google.charts.setOnLoadCallback(drawTemperature);
-            google.charts.setOnLoadCallback(drawHumidity);
-
-            function drawTemperature() {
-
-                  var data = new google.visualization.DataTable();
-                  data.addColumn('number', 'X');
-                  data.addColumn('number', 'Dogs');
-
-                  data.addRows([
-                    [0, 0],   [1, 10],  [2, 23],  [3, 17],  [4, 18],  [5, 9],
-                    [6, 11],  [7, 27],  [8, 33],  [9, 40],  [10, 32], [11, 35],
-                    [12, 30], [13, 40], [14, 42], [15, 47], [16, 44], [17, 48],
-                    [18, 52], [19, 54], [20, 42], [21, 55], [22, 56], [23, 57],
-                    [24, 60], [25, 50], [26, 52], [27, 51], [28, 49], [29, 53],
-                    [30, 55], [31, 60], [32, 61], [33, 59], [34, 62], [35, 65],
-                    [36, 62], [37, 58], [38, 55], [39, 61], [40, 64], [41, 65],
-                    [42, 63], [43, 66], [44, 67], [45, 69], [46, 69], [47, 70],
-                    [48, 72], [49, 68], [50, 66], [51, 65], [52, 67], [53, 70],
-                    [54, 71], [55, 72], [56, 73], [57, 75], [58, 70], [59, 68],
-                    [60, 64], [61, 60], [62, 65], [63, 67], [64, 68], [65, 69],
-                    [66, 70], [67, 72], [68, 75], [69, 80]
-                  ]);
-
-                  var options = {
-                    hAxis: {
-                      title: 'Time (hour)'
-                    },
-                    vAxis: {
-                      title: 'Temperature (Fahrenheit)'
-                    }
-                  };
-
-                  //var chart = new google.visualization.LineChart(document.getElementById('temperature_chart_div'));
-                  //chart.draw(data, options);
-                }
-
-                function drawHumidity() {
-
-                      var data = new google.visualization.DataTable();
-                      data.addColumn('number', 'X');
-                      data.addColumn('number', 'Dogs');
-
-                      data.addRows([
-                        [0, 0],   [1, 10],  [2, 23],  [3, 17],  [4, 18],  [5, 9],
-                        [6, 11],  [7, 27],  [8, 33],  [9, 40],  [10, 32], [11, 35],
-                        [12, 30], [13, 40], [14, 42], [15, 47], [16, 44], [17, 48],
-                        [18, 52], [19, 54], [20, 42], [21, 55], [22, 56], [23, 57],
-                        [24, 60], [25, 50], [26, 52], [27, 51], [28, 49], [29, 53],
-                        [30, 55], [31, 60], [32, 61], [33, 59], [34, 62], [35, 65],
-                        [36, 62], [37, 58], [38, 55], [39, 61], [40, 64], [41, 65],
-                        [42, 63], [43, 66], [44, 67], [45, 69], [46, 69], [47, 70],
-                        [48, 72], [49, 68], [50, 66], [51, 65], [52, 67], [53, 70],
-                        [54, 71], [55, 72], [56, 73], [57, 75], [58, 70], [59, 68],
-                        [60, 64], [61, 60], [62, 65], [63, 67], [64, 68], [65, 69],
-                        [66, 70], [67, 72], [68, 75], [69, 80]
-                      ]);
-
-                      var options = {
-                        hAxis: {
-                          title: 'Time (hour)'
-                        },
-                        vAxis: {
-                          title: 'Humidity (Fahrenheit)'
-                        }
-                      };
-
-                      var chart = new google.visualization.LineChart(document.getElementById('humidity_chart_div'));
-                      chart.draw(data, options);
-                      }
-          </script>
+    </script>
 
     </head>
 
     <body>
       <div id="userId"></div>
-      <table class="columns">
-        <tr>
-          <td><div id="temperature_chart_div" style="border: 1px solid #ccc"></div></td>
-          <td><div id="humidity_chart_div" style="border: 1px solid #ccc"></div></td>
+      <table class="columns" style="width:100%; table-layout:fixed;">
+        <tr style="border: 1px solid #ccc">
+          <span><h1 id="device_Name"></h1></span>
+          <td>
+            <span><h2 id="Current_Temperature"></h2></span>
+            <div id="temperature_chart_div" style="border: 1px solid #ccc"></div>
+          </td>
+          <td>
+            <span><h2 id="Current_Humidity"></h2></span>
+            <div id="humidity_chart_div" style="border: 1px solid #ccc"></div></td>
         </tr>
         </table>
     </body>
