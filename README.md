@@ -4,20 +4,25 @@
 
 Our project is hosted on https://ec463-swminiproject-11.firebaseapp.com and https://ec463-swminiproject-11.web.app
 
+
 ## Summary
 
-For this Software Mini Project, we created a web application called Home Monitor that is hosted on Firebase and written in HTML/CSS, Python and JavaScript. The app allows the user to monitor their home's temperature and humidity in multiple rooms. It receives and plots updated temperature and humidity every 15 minutes from a simulated sensor. 
+For this Software Mini Project, we created a web application called Home Monitor that is hosted on Firebase and written in HTML/CSS, Python and JavaScript. The app allows the user to monitor their home's temperature and humidity in multiple rooms. It receives and plots updated temperature and humidity every 15 minutes from a simulated sensor.
+
 
 ## Authentication
 
 The user login is based around an SSO, using their Google Account, in order to reduce user application logins to one login for security and convenience. To authenticate users with Firebase using their Google Account, the sign-in flow was handled with the Firebase Javascript SDK to create an instance of the Google provider object and prompting users with a pop-up window. Google Accounts was chosen because of its widespread use.
 
+
 ## Database
 
-The database was built using Cloud Firestore. The database contains one collection, "devices", which holds a document for each home monitor device/sensor. Each device document includes arrays for
+The database was built using Cloud Firestore. The database contains one collection, "devices", which holds a document for each home monitor device/sensor.
+The javascript code in example1.html takes in the documents associated with the authenticated user from firestore, finds out how many devices it needs to place in the .html, appends new rows to a table, and fills each row with data using ids.
 
 Database Organization Chart:
 ![Cloud Firestore Organization Chart](https://github.com/Myles-Cork/EC463-SWminiproject-11/blob/master/images/EC463SWmini_CloudstoreOrganizationV2.png)
+
 
 ## Sensor API and Simulation
 
@@ -25,14 +30,39 @@ The sensor API is built around the REST API. It uses HTTP patch requests from de
 
 A python script (mocksensor.py) for simulating a sensor device writing to the database can be found in the mocksensor folder.
 
+
 ## Verification
 
 In order to verify that the Home Monitor web app met all of its deliverables, the website was tested by loggin in with different Google Accounts using the SSO feature. Upon successful login, the user is directed to a web page showing temperature and humidity of each device in their home. The sensor API is used to simulate the temperature and humidity at all times, updating the values on the webpage. The graphs for the simulated sensors are updated every 15 minutes.
 
+
+## Demonstrations (bu.edu email required):
+
+### Authentication/SSO, Multiple Users, Sensor API, Realtime Updates, Moving Devices Between Users:
+https://drive.google.com/file/d/1yxEwKMwqey6UkGPaxlhJyClx2BtCoUEp/view?usp=sharing
+This demonstration shows multiple users signing in, using mocksensor.py to update the database with information and moving devices between users (excluding the inputted deviceId’s for security), and the web app’s device page updating in real time. This demonstration used mocksensor.py’s default values for update speed, so the graphs update every 15 minutes (not in this video).
+
+### Multiple Users, Sensor API, Realtime (Faster) Graph Updates
+https://drive.google.com/file/d/1Cenm5dkpqlLYmLY_lGV8H2dujYSRFNBL/view?usp=sharing
+This demonstration shows using mocksensor.py to update the database with and the web app’s device page updating in realtime. This demonstration used modified mocksensor.py’s values for update speed, so the graphs update every few seconds.
+
+### Demonstration Drive Folder (All of the above):
+https://drive.google.com/drive/folders/1w4qlGLsrzm89koznBIVgXqmCsQ1QgGbN?usp=sharing
+
+Note: If you would like a deviceId (or more than one) to use in mocksensor.py and associate with your accounts, let us know and we can send it/them to you.
+
+
 ## Setup
 
-install extra dependencies:
+Setting up the firebase webapp requires Node.js, firebase CLI, and a clone of this repository
+
+Follow the basic firebase setup guides: https://firebase.google.com/docs/guides
+
+Deploy the project to firebase.
+
+install extra dependencies for mocksensor.py:
 npm install --save express body-parser firebase-functions-helper
+
 
 ## Project Timeline
 
@@ -44,7 +74,7 @@ Monday, 09/14/2020 - The device simulation program to output temperature and hum
 
 Tuesday, 09/15/2020 - For the front end, the welcome page was improved with better formatting and a backgroun and a web page was created to display the temperature and humidity graphs. The Firestore database was re-organized to be a collection of devices, which holds a document for each home monitor device (see above in Database).
 
-Wednesday, 09/16/2020 - The layout of the graph web page was completed with the graphs being displayed in row by 2 columns set up, displaying temperature and humidity side by side for one device, using the Python functions. The userID was printed on the web page above the graphs by setting an observer on the Auth object. 
+Wednesday, 09/16/2020 - The layout of the graph web page was completed with the graphs being displayed in row by 2 columns set up, displaying temperature and humidity side by side for one device, using the Python functions. The userID was printed on the web page above the graphs by setting an observer on the Auth object.
 
 Thursday, 09/16/2020 - Multiple devices are now available on the graph web page, depicting plots of temperature and humidity in multiple rooms with realtime updates. The front end design was tweaked for easier visualization for the user.
 
