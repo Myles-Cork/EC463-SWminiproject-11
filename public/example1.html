@@ -14,17 +14,19 @@
         <script type="text/javascript">
           const db = firebase.firestore();
           google.charts.load('current', {packages: ['corechart']});
+          var displayedDevices = [""];
 
           db.collection('devices').orderBy('deviceName').onSnapshot(snapshot =>{
 
             user = firebase.auth().currentUser;
             if(user !== null){
-              var Devices = db.collection("devices");
+              var Devices = snapshot;
               var d = 0;
+              var Devices = db.collection("devices");
               var userDevices = Devices.where("userId", "==", user.uid).get().then(function(querySnapshot) {
                   querySnapshot.forEach(function(doc) {
                     if (doc.exists) {
-
+                      if(!displayedDevices.includes(doc.id)){
                         var str = "";
                         str+="<tr>";
                         str+="<td>";
@@ -44,6 +46,10 @@
                         str+="</tr>";
 
                         $('#devices').append(str);
+
+                        displayedDevices.push(doc.id);
+                      }
+
 
                         var devicedata = doc.data();
                         var deviceName = devicedata.deviceName;
