@@ -1,52 +1,62 @@
-<html>
-<head>
-  <title>Firebase Login</title>
-  <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
+ <html lang="en">
+        <head>
+          <meta charset="utf-8">
+          <title>Home Monitor MiniProject</title>
+          <link rel="stylesheet" href="welcome.css">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <div id="login_div" class="main-div">
-    <h3>Temperature and Humidity Home Monitor</h3>
-    <input type="email" placeholder="Email" id="email_field" />
-    <input type="password" placeholder="Password" id="password_field" />
-   
-    <button onclick="signUp()" id ="signUp"> Sign Up </button>
-    <button onclick="signIn()" id ="signIn"> Sign In </button>
-    <button onclick="signOut()" id ="signOut"> Sign Out </button>
-    
-    
-    
-    <button onclick="login()">Login to Account</button>
-  </div>
+        </head>
+        <body class="fullscreen">
+          <div class="container">
+            <h1 class="title">Welcome to Your Home Monitor!</h1>
 
-  <div id="user_div" class="loggedin-div">
-    <h3>Welcome User</h3>
-    <p id="user_para">Welcome to Firebase web login Example. You're currently logged in.</p>
-    <button onclick="logout()">Logout</button>
-  </div>
+            <script src="/__/firebase/7.20.0/firebase-app.js"></script>
+            <script src="/__/firebase/7.20.0/firebase-analytics.js"></script>
+            <script src="/__/firebase/7.20.0/firebase-auth.js"></script>
+            <script src="/__/firebase/7.20.0/firebase-firestore.js"></script>
 
+            <!-- Initialize Firebase -->
+            <script src="/__/firebase/init.js"></script>
 
+            <script>
+              document.addEventListener('DOMContentLoaded', event => {
+                const app = firebase.app();
+                console.log(app)
+              });
+            </script>
 
-  <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/7.6.2/firebase-auth.js"></script> 
-  
-  <script>
-    // Initialize Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyDKoiJKuXg0Rb5vcEkP_I085lSHhST3Ihs",
-      authDomain: "ec463-swminiproject-11.firebaseapp.com",
-      databaseURL: "https://ec463-swminiproject-11.firebaseio.com",
-      projectId: "ec463-swminiproject-11",
-      storageBucket: "ec463-swminiproject-11.appspot.com",
-      messagingSenderId: "361498299130",
-      appId: "1:361498299130:web:d257964155304d874a5743",
-      measurementId: "G-8H6KG81R81"
-    };
-    firebase.initializeApp(config);
-  </script>
-  <script src="index.js"></script>
+            <script>
+                // Initialize Firebase
+                const firebaseConfig = {
+                  apiKey: "AIzaSyDKoiJKuXg0Rb5vcEkP_I085lSHhST3Ihs",
+                  authDomain: "ec463-swminiproject-11.firebaseapp.com",
+                  databaseURL: "https://ec463-swminiproject-11.firebaseio.com",
+                  projectId: "ec463-swminiproject-11",
+                  storageBucket: "ec463-swminiproject-11.appspot.com",
+                  messagingSenderId: "361498299130",
+                  appId: "1:361498299130:web:d257964155304d874a5743",
+                  measurementId: "G-8H6KG81R81"
+                };
+                firebase.initializeApp(firebaseConfig);
+                firebase.analytics();
+            </script>
 
-</body>
-</html>
+            <h3>Sign In with Google Here</h3>
+            <button id="googleloginbutton" type="button" class="btn">Sign In</button>
+          </div>
 
+        <script>
+          var googleloginbutton = document.getElementById("googleloginbutton");
+
+          googleloginbutton.onclick = function() {
+            var provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithPopup(provider).then(function () {
+              window.location = "example1.html";
+            }).catch(function (error) {
+              var errorMessage = error.message;
+              alert(errorMessage);
+            })
+            }
+        </script>
+
+        </body>

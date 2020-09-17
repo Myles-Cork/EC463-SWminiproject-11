@@ -1,0 +1,135 @@
+
+<html>
+    <head>
+    <script src="/__/firebase/7.20.0/firebase-app.js"></script>
+    <script src="/__/firebase/7.20.0/firebase-auth.js"></script>
+    <script src="/__/firebase/7.20.0/firebase-firestore.js"></script>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+    <script src="/__/firebase/init.js"></script>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+          const db = firebase.firestore();
+          google.charts.load('current', {packages: ['corechart']});
+          var displayedDevices = [""];
+
+          db.collection('devices').orderBy('deviceName').onSnapshot(snapshot =>{
+
+            user = firebase.auth().currentUser;
+            if(user !== null){
+              var Devices = snapshot;
+              var d = 0;
+              var Devices = db.collection("devices");
+              var userDevices = Devices.where("userId", "==", user.uid).get().then(function(querySnapshot) {
+                  querySnapshot.forEach(function(doc) {
+                    if (doc.exists) {
+                      if(!displayedDevices.includes(doc.id)){
+                        var str = "";
+                        str+="<tr>";
+                        str+="<td>";
+                        str+="<h1 id='device_Name" + d + "'></h1>";
+                        str+="</td>";
+                        str+="<td>";
+                        str+="</td>";
+                        str+="</tr>";
+                        str+="<tr>";
+                        str+="<td>";
+                        str+="<span><h2 id='Current_Temperature" + d + "'></h2></span>";
+                        str+="<div id='temperature_chart_div" + d + "' style='border: 1px solid #ccc'></div>";
+                        str+="</td>";
+                        str+="<td>";
+                        str+="<span><h2 id='Current_Humidity" + d + "'></h2></span>";
+                        str+="<div id='humidity_chart_div" + d + "' style='border: 1px solid #ccc'></div></td>";
+                        str+="</tr>";
+
+                        $('#devices').append(str);
+
+                        displayedDevices.push(doc.id);
+                      }
+
+
+                        var devicedata = doc.data();
+                        var deviceName = devicedata.deviceName;
+                        var CurrentTemperature = devicedata.CurrentTemperature;
+                        var CurrentHumidity = devicedata.CurrentHumidity;
+                        var Tempdata = devicedata.Temperature;
+                        var Humiddata = devicedata.Humidity;
+                        var Timedata = devicedata.SampleTimes;
+                        var samplenum = Tempdata.length;
+                        var tempRows = [[0,0]]
+                        var humidRows = [[0,0]]
+                        for(var i = 0; i < samplenum; i++){
+                            tempRows[i] = [Timedata[i],parseInt(Tempdata[i],10)];
+                            humidRows[i] = [Timedata[i],parseInt(Humiddata[i],10)];
+                        }
+
+                        document.getElementById("device_Name" + d).innerHTML = "Device Name: " + deviceName;
+                        document.getElementById("Current_Temperature" + d).innerHTML = "Current Temperature: " + CurrentTemperature + "°F";
+                        document.getElementById("Current_Humidity" + d).innerHTML = "Current Humidity: " + CurrentHumidity + "%";
+
+                        var tempGraphData = new google.visualization.DataTable();
+                        tempGraphData.addColumn('string', 'Time');
+                        tempGraphData.addColumn('number', 'Temperature');
+
+                        tempGraphData.addRows(tempRows);
+
+                        var tempGraphOptions = {
+                          hAxis: {
+                            title: 'Time (hrs:mins:sec)'
+                          },
+                          vAxis: {
+                            title: 'Temperature (Fahrenheit)'
+                          }
+                        };
+
+                        var tempchart = new google.visualization.LineChart(document.getElementById('temperature_chart_div' + d));
+                        tempchart.draw(tempGraphData, tempGraphOptions);
+
+
+                        var humidGraphData = new google.visualization.DataTable();
+                        humidGraphData.addColumn('string', 'Time');
+                        humidGraphData.addColumn('number', 'Humidity');
+
+                        humidGraphData.addRows(humidRows);
+
+                        var humidGraphOptions = {
+                          hAxis: {
+                            title: 'Time (hrs:mins:sec)'
+                          },
+                          vAxis: {
+                            title: 'Humidity (%)'
+                          }
+                        };
+
+                        var humidchart = new google.visualization.LineChart(document.getElementById('humidity_chart_div' + d));
+                        humidchart.draw(humidGraphData, humidGraphOptions);
+
+                        d++;
+                    }
+                  });
+              })
+            }
+          })
+
+          firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+              // User is signed in.
+              document.getElementById("userId").innerHTML = 'Your UserId: ' + firebase.auth().currentUser.uid;
+            } else {
+              // No user is signed in.
+            }
+          });
+    </script>
+
+    </head>
+
+    <body>
+      <div id="userId"></div>
+      <table id="devices" class="columns" style="width:100%; table-layout:fixed;">
+
+      </table>
+    </body>
+  </html>
