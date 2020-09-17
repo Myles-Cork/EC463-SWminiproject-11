@@ -39,7 +39,18 @@ In order to verify that the Home Monitor web app met all of its deliverables, th
 
 Case: Google Authentication - User inputs wrong email address, login invalid -> Test Success
 Case: Google Authentication - User input correct email address, login valid -> Test Success
-Case: mocksensor.py - User inputs wrong device, database not updated -> Test Success
+Case: Google Authentication - Multiple users logged in simultaneously, web app works for both -> Test Success
+Case: mocksensor.py/Sensor API - User/device inputs device that doesn't exist, database not updated -> Test Success
+Case: mocksensor.py/Sensor API - User/device inputs wrong device, database not updated -> Test Success
+Case: mocksensor.py/Sensor API - User/device inputs userId that doesn't exist to a devices userId field, userId is replaced -> Test Failed
+Case: mocksensor.py/Sensor API - User/device inputs correct userId to a devices userId field, userId is replaced -> Test Success
+Case: mocksensor.py/Sensor API - User/device changes deviceName, deviceName is replaced -> Test Success
+Case: mocksensor.py/Sensor API - User/device removes ownership of a device (userId) while the web app is open, device doesn't disappear from devices page until the page refreshes, but stops getting updates from database (see 1:55 in first demo video below) -> Test Failed
+Case: mocksensor.py/Sensor API - User/device adds ownership of a device (userId) while the web app is open, device appears on user's device page -> Test Success
+Case: database/Sensor API - Database receives updates from multiple different devices in quick succession, database updates correctly -> Test Success
+Case: Devices Page - user has 0 devices, no devices, graphs, data, etc. displayed on devices page -> Test Success
+Case: Devices Page - user has 1 device, device data is presented on devices page -> Test Success
+Case: Devices Page - user has more than one device, device data for each is presented on devices page in vertical table -> Test Success
 
 ## Demonstrations (bu.edu email required):
 
