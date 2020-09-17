@@ -3,12 +3,23 @@
     <head>
     <script src="/__/firebase/7.20.0/firebase-app.js"></script>
     <script src="/__/firebase/7.20.0/firebase-auth.js"></script>
+    <script src="/__/firebase/7.20.0/firebase-firestore.js"></script>
 
     <script src="/__/firebase/init.js"></script>
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         <script type="text/javascript">
-          
+          const db = firebase.firestore();
+          db.collection('devices').orderBy('deviceName').onSnapshot(snapshot =>{
+            var Devices = db.collection("devices").doc('jya8XdUSmvrRehqk7t4c');
+            Devices.get().then(function(doc){
+                if (doc.exists) {
+                    console.log("Document data:", doc.data());
+                }
+            })
+
+          })
+
           firebase.auth().onAuthStateChanged(function(user) {
             if (user) {
               // User is signed in.
@@ -18,16 +29,18 @@
             }
           });
 
+
+
             google.charts.load('current', {packages: ['corechart']});
             google.charts.setOnLoadCallback(drawTemperature);
             google.charts.setOnLoadCallback(drawHumidity);
-  
+
             function drawTemperature() {
-  
+
                   var data = new google.visualization.DataTable();
                   data.addColumn('number', 'X');
                   data.addColumn('number', 'Dogs');
-  
+
                   data.addRows([
                     [0, 0],   [1, 10],  [2, 23],  [3, 17],  [4, 18],  [5, 9],
                     [6, 11],  [7, 27],  [8, 33],  [9, 40],  [10, 32], [11, 35],
@@ -42,7 +55,7 @@
                     [60, 64], [61, 60], [62, 65], [63, 67], [64, 68], [65, 69],
                     [66, 70], [67, 72], [68, 75], [69, 80]
                   ]);
-  
+
                   var options = {
                     hAxis: {
                       title: 'Time (hour)'
@@ -51,17 +64,17 @@
                       title: 'Temperature (Fahrenheit)'
                     }
                   };
-  
+
                   var chart = new google.visualization.LineChart(document.getElementById('temperature_chart_div'));
                   chart.draw(data, options);
                 }
-            
+
                 function drawHumidity() {
-  
+
                       var data = new google.visualization.DataTable();
                       data.addColumn('number', 'X');
                       data.addColumn('number', 'Dogs');
-  
+
                       data.addRows([
                         [0, 0],   [1, 10],  [2, 23],  [3, 17],  [4, 18],  [5, 9],
                         [6, 11],  [7, 27],  [8, 33],  [9, 40],  [10, 32], [11, 35],
@@ -76,7 +89,7 @@
                         [60, 64], [61, 60], [62, 65], [63, 67], [64, 68], [65, 69],
                         [66, 70], [67, 72], [68, 75], [69, 80]
                       ]);
-  
+
                       var options = {
                         hAxis: {
                           title: 'Time (hour)'
@@ -85,14 +98,14 @@
                           title: 'Humidity (Fahrenheit)'
                         }
                       };
-  
+
                       var chart = new google.visualization.LineChart(document.getElementById('humidity_chart_div'));
                       chart.draw(data, options);
                       }
           </script>
-  
-    </head>   
-  
+
+    </head>
+
     <body>
       <div id="userId"></div>
       <table class="columns">
