@@ -1,7 +1,7 @@
 body {
   font-family: "Times New Roman", Times, serif;
-  color: cornsilk;
-  background-image: url("http://www.jupiterguttercompany.com/wp-content/uploads/big-sky-.jpg");
+  color: rgb(133, 28, 21);
+  background-image: url("images/sky.jpg");
 }
 
 html,
@@ -27,9 +27,9 @@ html,
 	padding: 15px 35px;
 	background: transparent;
 	outline: none;
-	border: 2px solid #ffffff;
+	border: 2px solid rgb(133, 28, 21);
 	font-weight: normal;
   cursor: pointer;
-  border-color: cornsilk;
-  color: cornsilk;
+  border-color: rgb(133, 28, 21);
+  color: rgb(133, 28, 21);
 }
