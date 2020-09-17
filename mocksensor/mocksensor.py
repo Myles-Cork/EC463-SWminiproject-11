@@ -42,7 +42,7 @@ if prewarmAns == 'Y':
         SampleTimes[k] = (datetime.now() - timedelta(seconds=(historyUpdateTime*(k+1)))).strftime("%H:%M:%S")
 
 userAns = ' '
-while userAns != 'Y' and prewarmAns != 'N':
+while userAns != 'Y' and userAns != 'N':
     print("Change userid for this device?")
     userAns = input("Enter Y or N: ")
 
