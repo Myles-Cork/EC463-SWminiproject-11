@@ -53,6 +53,19 @@ if userAns == 'Y':
         data = {
             'userId' : useridAns
         })
+
+deviceAns = ' '
+while deviceAns != 'Y' and deviceAns != 'N':
+    print("Change name for this device?")
+    deviceAns = input("Enter Y or N: ")
+
+deviceNameAns = ' '
+if deviceAns == 'Y':
+    deviceNameAns = input("Enter new name for this device: ")
+    r = requests.patch('https://us-central1-ec463-swminiproject-11.cloudfunctions.net/webApi/api/v1/device/' + deviceId,
+        data = {
+            'deviceName' : deviceNameAns
+        })
     print(r)
     # print content of request
     print(r.content)
