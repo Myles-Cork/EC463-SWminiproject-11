@@ -8,8 +8,8 @@ print("This script sends mock data to the database under the deviceId specified\
 deviceId = input("Enter a deviceId: ")
 
 
-numPoints = 10 #number of datapoints to keep track of
-updateTime = 5 #seconds between current temp updates
+numPoints = 100 #number of datapoints to keep track of
+updateTime = 2 #seconds between current temp updates
 historyUpdateTime = 60 * 15 #seconds between history upates. History updates are when the arrays of previous temp/humidity values update
 historyUpdateIteration = historyUpdateTime/updateTime #number of iterations of current time updates inbetween history updates
 numUpdates = 100 #total number of times to update (must be greater than numPoints*historyUpdateIteration for a full cycle of generated data points through the arrays)
