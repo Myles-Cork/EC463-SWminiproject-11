@@ -35,6 +35,11 @@ A python script (mocksensor.py) for simulating a sensor device writing to the da
 
 In order to verify that the Home Monitor web app met all of its deliverables, the website was tested by loggin in with different Google Accounts using the SSO feature. Upon successful login, the user is directed to a web page showing temperature and humidity of each device in their home. The sensor API is used to simulate the temperature and humidity at all times, updating the values on the webpage. The graphs for the simulated sensors are updated every 15 minutes.
 
+## Test Cases
+
+Case: Google Authentication - User inputs wrong email address, login invalid -> Test Success
+Case: Google Authentication - User input correct email address, login valid -> Test Success
+Case: mocksensor.py - User inputs wrong device, database not updated -> Test Success
 
 ## Demonstrations (bu.edu email required):
 
