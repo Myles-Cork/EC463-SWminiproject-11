@@ -18,6 +18,8 @@ The sensor API is built around the REST API. It uses HTTP patch requests from de
 
 A python script (mocksensor.py) for simulating a sensor device writing to the database can be found in the mocksensor folder.
 
+## Verification
+
 ## Setup
 install extra dependencies:
 npm install --save express body-parser firebase-functions-helper
